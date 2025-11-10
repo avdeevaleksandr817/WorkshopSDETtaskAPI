@@ -1,0 +1,3 @@
+[submodule "simbirsoft_sdet_project"]
+    path = simbirsoft_sdet_project
+    url = https://github.com/bondarenkokate73/simbirsoft_sdet_project.git

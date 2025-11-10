@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.12.0'
+}
+
+group = 'ru.simbirsoft'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // ✅ Jackson — все в одной группе: com.fasterxml.jackson.core
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    // Тестовые зависимости
+    testImplementation 'org.testng:testng:7.8.0'
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.qameta.allure:allure-testng:2.12.0'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.7'
+}
+
+
+test {
+    // Указываем, где хранить результаты Allure
+    systemProperty "allure.results.directory", "$buildDir/allure-results"
+    systemProperty "allure.version", "2.12.0"
+
+    // Параллельный запуск: количество fork'ов = число ядер
+    maxParallelForks = Runtime.runtime.availableProcessors()
+
+    // Логирование результатов тестов
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true  // Показать stdout/stderr
+    }
+
+    // Настройка TestNG: параллельный запуск методов
+    useTestNG {
+        parallel = 'methods'
+        threadCount = Runtime.runtime.availableProcessors()
+        useDefaultListeners = true
+    }
+}
