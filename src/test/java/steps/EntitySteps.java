@@ -2,6 +2,7 @@ package steps;
 
 import dto.EntityRequest;
 import dto.EntityResponse;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import static org.hamcrest.Matchers.*;
@@ -51,6 +52,7 @@ public class EntitySteps {
      * @param request объект с данными для создания сущности
      * @return полный объект {@link EntityResponse} из GET-запроса
      */
+    @Step("Создать сущность и получить полный объект")
     public EntityResponse createEntity(EntityRequest request) {
         // Сначала создаём — получаем id
         String id = RestAssured.given()
@@ -82,6 +84,7 @@ public class EntitySteps {
      * @param id идентификатор сущности (строка)
      * @return объект {@link EntityResponse} с заполненными полями
      */
+    @Step("Получить сущность по ID = {id}")
     public EntityResponse getEntity(String id) {
         return RestAssured.given()
                 .get("/api/get/" + id)
@@ -105,6 +108,7 @@ public class EntitySteps {
      * Ответ не извлекается — достаточно подтверждения успешного статуса.
      * </p>
      */
+    @Step("Получить все сущности")
     public void getAllEntities() {
         RestAssured.given()
                 .contentType("application/json")
@@ -130,6 +134,7 @@ public class EntitySteps {
      * @param id      идентификатор сущности для обновления
      * @param request объект с новыми значениями полей
      */
+    @Step("Обновить сущность с ID = {id}")
     public void updateEntity(String id, EntityRequest request) {
         RestAssured.given()
                 .contentType("application/json")
@@ -155,6 +160,7 @@ public class EntitySteps {
      *
      * @param id идентификатор сущности
      */
+    @Step("Удалить сущность с ID = {id}")
     public void deleteEntity(String id) {
         RestAssured.given()
                 .when()
@@ -182,6 +188,7 @@ public class EntitySteps {
      *
      * @param id идентификатор сущности
      */
+    @Step("Проверить, что сущность с ID = {id} не найдена")
     public void assertEntityNotFound(String id) {
         RestAssured.given()
                 .when()
